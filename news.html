@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latest News - CJ Entertainment</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>📰 CJ Entertainment</h1>
+<p>Latest Celebrity News</p>
+</header>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="news.html">News</a>
+<a href="videos.html">Videos</a>
+<a href="gallery.html">Gallery</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+<section>
+
+<div class="news">
+<h2>🔥 Breaking News</h2>
+<p>Post your latest celebrity news here.</p>
+<button>Read More</button>
+</div>
+
+<div class="news">
+<h2>🎵 Music News</h2>
+<p>Post music updates here.</p>
+<button>Read More</button>
+</div>
+
+<div class="news">
+<h2>😂 Comedy News</h2>
+<p>Post comedy updates here.</p>
+<button>Read More</button>
+</div>
+
+<div class="news">
+<h2>⚽ Sports News</h2>
+<p>Post football and sports updates here.</p>
+<button>Read More</button>
+</div>
+
+</section>
+<div id="latestNews"></div>
+
+<script>
+const news = JSON.parse(localStorage.getItem("latestNews"));
+
+if(news){
+document.getElementById("latestNews").innerHTML = `
+<div class="news">
+document.getElementById("latestNews").innerHTML = `
+<div class="news">
+
+<img src="${news.image}" style="width:100%;border-radius:10px;">
+
+<h2>${news.title}</h2>
+
+<p>${news.description}</p>
+
+</div>
+`;
+<p>${news.description}</p>
+</div>
+`;
+}
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>
