@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - CJ Entertainment</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>🛠️ CJ Entertainment Admin</h1>
+<p>Manage Your Website</p>
+</header>
+
+<section class="news">
+
+<h2>Add News</h2>
+
+<input type="text" id="title" placeholder="News Title"><br><br>
+
+<textarea id="description" placeholder="News Description" rows="6"></textarea><br><br>
+
+<input type="text" id="video" placeholder="YouTube Video Link"><br><br>
+
+<button onclick="publishNews()">Publish</button>
+
+<p id="message"></p>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+</html>
