@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CJ Entertainment Admin Login</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#111;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login-box{
+background:#fff;
+padding:30px;
+width:90%;
+max-width:400px;
+border-radius:12px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+text-align:center;
+}
+
+h1{
+color:#e60023;
+margin-bottom:10px;
+}
+
+p{
+margin-bottom:20px;
+color:#666;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#e60023;
+color:#fff;
+border:none;
+border-radius:6px;
+font-size:18px;
+cursor:pointer;
+}
+
+button:hover{
+background:#b3001b;
+}
+
+#message{
+margin-top:15px;
+font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+<h1>🎬 CJ Entertainment</h1>
+<p>Admin Login</p>
+
+<input
+type="email"
+id="email"
+placeholder="Email">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button id="loginBtn">
+Login
+</button>
+
+<p id="message"></p>
+
+</div><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
+  authDomain: "cj-entertainment-babc7.firebaseapp.com",
+  projectId: "cj-entertainment-babc7",
+  storageBucket: "cj-entertainment-babc7.firebasestorage.app",
+  messagingSenderId: "724552137010",
+  appId: "1:724552137010:web:bd5b4c927e59dd2394ff2b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+
+    document.getElementById("message").textContent =
+      "✅ Login successful!";
+
+    window.location.href = "admin.html";
+
+  } catch (error) {
+    document.getElementById("message").textContent =
+      "❌ " + error.message;
+  }
+
+});
+</script>
