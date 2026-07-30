@@ -1,37 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - CJ Entertainment</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - CJ Entertainment</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-<h1>🛠️ CJ Entertainment Admin</h1>
-<p>Manage Your Website</p>
+  <h1>🛠️ CJ Entertainment Admin</h1>
+  <p>Manage Your Website</p>
 </header>
 
 <section class="news">
 
-<h2>Add News</h2>
+  <h2>Add News</h2>
 
-<input type="text" id="title" placeholder="News Title"><br><br>
+  <input type="text" id="title" placeholder="News Title"><br><br>
 
-<textarea id="description" placeholder="News Description" rows="6"></textarea><br><br>
+  <textarea id="description" placeholder="News Description" rows="6"></textarea><br><br>
 
-<input type="text" id="video" placeholder="YouTube Video Link"><br><br>
+  <input type="text" id="video" placeholder="YouTube Video Link"><br><br>
 
-<button onclick="publishNews()">Publish</button>
+  <input type="text" id="image" placeholder="Image URL"><br><br>
 
-<p id="message"></p>
+  <button id="publishBtn">Publish</button>
+
+  <p id="message"></p>
 
 </section>
 
-<script src="script.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAv8kfZgaj15vcONPBp5xpbRD3ZxrWlxIY",
+  authDomain: "cj-entertainment.firebaseapp.com",
+  projectId: "cj-entertainment",
+  storageBucket: "cj-entertainment.firebasestorage.app",
+  messagingSenderId: "81391488705",
+  appId: "1:81391488705:web:9dd6ba7582d28378834e40",
+  measurementId: "G-BFGQN4NWTC"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById("publishBtn").addEventListener("click", async () => {
+
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const image = document.getElementById("image").value;
+  const video = document.getElementById("video").value;
+
+  if (!title || !description) {
+    document.getElementById("message").textContent =
+      "Please enter a title and description.";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "news"), {
+      title,
+      description,
+      image,
+      video,
+      createdAt: new Date()
+    });
+
+    document.getElementById("message").textContent =
+      "✅ News published successfully!";
+
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("image").value = "";
+    document.getElementById("video").value = "";
+
+  } catch (error) {
+    document.getElementById("message").textContent =
+      "❌ " + error.message;
+  }
+
+});
+</script>
 
 </body>
 </html>
