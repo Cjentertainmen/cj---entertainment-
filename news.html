@@ -23,39 +23,12 @@
 <a href="contact.html">Contact</a>
 </nav>
 
-<section>
-
-<div class="news">
-<h2>🔥 Breaking News</h2>
-<p>Post your latest celebrity news here.</p>
-<button>Read More</button>
-</div>
-
-<div class="news">
-<h2>🎵 Music News</h2>
-<p>Post music updates here.</p>
-<button>Read More</button>
-</div>
-
-<div class="news">
-<h2>😂 Comedy News</h2>
-<p>Post comedy updates here.</p>
-<button>Read More</button>
-</div>
-
-<div class="news">
-<h2>⚽ Sports News</h2>
-<p>Post football and sports updates here.</p>
-<button>Read More</button>
-</div>
-
+<section id="latestNews">
 </section>
-<div id="latestNews"></div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
@@ -71,31 +44,32 @@ const db = getFirestore(app);
 
 const newsContainer = document.getElementById("latestNews");
 
-const newsQuery = query(collection(db, "news"), orderBy("createdAt", "desc"));
+try {
+  const snapshot = await getDocs(collection(db, "news"));
 
-const snapshot = await getDocs(newsQuery);
+  if (snapshot.empty) {
+    newsContainer.innerHTML = "<h2>No news available.</h2>";
+  } else {
+    snapshot.forEach((doc) => {
+      const news = doc.data();
 
-snapshot.forEach((doc) => {
+      newsContainer.innerHTML += `
+        <div class="news">
+          ${news.image ? `<img src="${news.image}" style="width:100%;max-width:600px;border-radius:10px;">` : ""}
+          <h2>${news.title}</h2>
+          <p>${news.description}</p>
+          ${news.video ? `<p><a href="${news.video}" target="_blank">▶ Watch Video</a></p>` : ""}
+          <hr>
+        </div>
+      `;
+    });
+  }
 
-const news = doc.data();
-
-newsContainer.innerHTML += `
-
-<div class="news">
-
-<img src="${news.image}" style="width:100%;border-radius:10px;">
-
-<h2>${news.title}</h2>
-
-<p>${news.description}</p>
-
-</div>
-
-`;
-
-});
-
+} catch (error) {
+  newsContainer.innerHTML = `<h2>Error: ${error.message}</h2>`;
+}
 </script>
+
 <script src="script.js"></script>
 
 </body>
