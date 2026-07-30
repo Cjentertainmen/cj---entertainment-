@@ -52,13 +52,35 @@
 </section>
 <div id="latestNews"></div>
 
-<script>
-const news = JSON.parse(localStorage.getItem("latestNews"));
+<script type="module">
 
-if(news){
-document.getElementById("latestNews").innerHTML = `
-<div class="news">
-document.getElementById("latestNews").innerHTML = `
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
+  authDomain: "cj-entertainment-babc7.firebaseapp.com",
+  projectId: "cj-entertainment-babc7",
+  storageBucket: "cj-entertainment-babc7.firebasestorage.app",
+  messagingSenderId: "724552137010",
+  appId: "1:724552137010:web:bd5b4c927e59dd2394ff2b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const newsContainer = document.getElementById("latestNews");
+
+const newsQuery = query(collection(db, "news"), orderBy("createdAt", "desc"));
+
+const snapshot = await getDocs(newsQuery);
+
+snapshot.forEach((doc) => {
+
+const news = doc.data();
+
+newsContainer.innerHTML += `
+
 <div class="news">
 
 <img src="${news.image}" style="width:100%;border-radius:10px;">
@@ -68,11 +90,11 @@ document.getElementById("latestNews").innerHTML = `
 <p>${news.description}</p>
 
 </div>
+
 `;
-<p>${news.description}</p>
-</div>
-`;
-}
+
+});
+
 </script>
 <script src="script.js"></script>
 
