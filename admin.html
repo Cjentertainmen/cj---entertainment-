@@ -47,6 +47,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+  console.log(firebaseConfig.projectId);
 const db = getFirestore(app);
 
 document.getElementById("publishBtn").addEventListener("click", async () => {
