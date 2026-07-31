@@ -3,31 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard - CJ Entertainment</title>
+<title>CJ Entertainment Admin</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+input, textarea, button{
+width:100%;
+padding:12px;
+margin:10px 0;
+font-size:16px;
+border-radius:8px;
+}
+
+button{
+background:#d40000;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+button:hover{
+background:#900000;
+}
+</style>
+
 </head>
 
 <body>
 
 <header>
 <h1>🛠️ CJ Entertainment Admin</h1>
-<p>Manage Your Website</p>
+<p>Publish Latest News</p>
 </header>
 
 <section class="news">
 
-<h2>Add News</h2>
+<input type="text" id="title" placeholder="News Title">
 
-<input type="text" id="title" placeholder="News Title"><br><br>
+<textarea id="description" rows="6" placeholder="News Description"></textarea>
 
-<textarea id="description" placeholder="News Description" rows="6"></textarea><br><br>
+<input type="text" id="video" placeholder="YouTube Video Link">
 
-<input type="text" id="video" placeholder="YouTube Video Link"><br><br>
+<input type="file" id="imageFile" accept="image/*">
 
-<input type="text" id="image" placeholder="Image URL"><br><br>
-
-<button id="publishBtn">Publish</button>
+<button id="publishBtn">
+Publish News
+</button>
 
 <p id="message"></p>
 
@@ -36,67 +58,117 @@
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
-  authDomain: "cj-entertainment-babc7.firebaseapp.com",
-  projectId: "cj-entertainment-babc7",
-  storageBucket: "cj-entertainment-babc7.firebasestorage.app",
-  messagingSenderId: "724552137010",
-  appId: "1:724552137010:web:bd5b4c927e59dd2394ff2b"
+
+apiKey:"AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
+
+authDomain:"cj-entertainment-babc7.firebaseapp.com",
+
+projectId:"cj-entertainment-babc7",
+
+storageBucket:"cj-entertainment-babc7.firebasestorage.app",
+
+messagingSenderId:"724552137010",
+
+appId:"1:724552137010:web:bd5b4c927e59dd2394ff2b"
+
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
 
-// Protect Admin Page
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  }
+const db=getFirestore(app);
+
+const auth=getAuth(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href="login.html";
+
+}
+
 });
 
-// Publish News
-document.getElementById("publishBtn").addEventListener("click", async () => {
+document.getElementById("publishBtn").addEventListener("click",async()=>{
 
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const image = document.getElementById("image").value;
-  const video = document.getElementById("video").value;
+const title=document.getElementById("title").value;
 
-  if (!title || !description) {
-    document.getElementById("message").textContent =
-      "Please enter a title and description.";
-    return;
-  }
+const description=document.getElementById("description").value;
 
-  try {
+const video=document.getElementById("video").value;
 
-    await addDoc(collection(db, "news"), {
-      title: title,
-      description: description,
-      image: image,
-      video: video,
-      createdAt: new Date()
-    });
+const file=document.getElementById("imageFile").files[0];
 
-    document.getElementById("message").textContent =
-      "✅ News published successfully!";
+if(!title||!description||!file){
 
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("image").value = "";
-    document.getElementById("video").value = "";
+document.getElementById("message").innerHTML="Please complete all fields.";
 
-  } catch (error) {
+return;
 
-    document.getElementById("message").textContent =
-      "❌ " + error.message;
+}
 
-  }
+document.getElementById("message").innerHTML="Uploading image...";
+
+const formData=new FormData();
+
+formData.append("file",file);
+
+formData.append("upload_preset","cjnews");
+
+const upload=await fetch(
+
+"https://api.cloudinary.com/v1_1/kvczllar/image/upload",
+
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+);
+
+const imageData=await upload.json();
+
+const image=imageData.secure_url;
+
+await addDoc(collection(db,"news"),{
+
+title,
+
+description,
+
+video,
+
+image,
+
+createdAt:new Date()
+
+});
+
+document.getElementById("message").innerHTML="✅ News Published Successfully!";
+
+document.getElementById("title").value="";
+
+document.getElementById("description").value="";
+
+document.getElementById("video").value="";
+
+document.getElementById("imageFile").value="";
 
 });
 
