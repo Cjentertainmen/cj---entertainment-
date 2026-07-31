@@ -1,122 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CJ Entertainment</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
-body{
+
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial,sans-serif;
+}
+
+body{
 background:#f4f4f4;
+}
+
+.ticker{
+background:#d40000;
+color:#fff;
+padding:10px;
+font-weight:bold;
 }
 
 header{
 background:#111;
 color:white;
 text-align:center;
-padding:20px;
+padding:25px;
 }
 
-.ticker{
-background:red;
-color:white;
-padding:10px;
-font-weight:bold;
+header h1{
+font-size:36px;
+}
+
+header p{
+margin-top:10px;
+color:#ddd;
 }
 
 nav{
-background:#222;
 display:flex;
 justify-content:center;
 flex-wrap:wrap;
+background:#222;
 }
 
 nav a{
 color:white;
-padding:15px 20px;
 text-decoration:none;
+padding:15px 20px;
+font-weight:bold;
 }
 
 nav a:hover{
-background:red;
+background:#d40000;
 }
 
-.hero{
+.search-box{
 background:white;
 padding:20px;
 text-align:center;
 }
 
-.hero img{
-width:100%;
-max-height:400px;
-object-fit:cover;
-border-radius:10px;
-}
-
-.search{
-text-align:center;
-padding:20px;
-background:white;
-}
-
-.search input{
+.search-box input{
 width:90%;
 max-width:500px;
 padding:12px;
-border:1px solid #ccc;
-border-radius:6px;
 font-size:16px;
+border:1px solid #ccc;
+border-radius:30px;
 }
 
-#latestNews{
-max-width:1100px;
-margin:auto;
-padding:20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
-
-.news{
-background:white;
-border-radius:10px;
-padding:15px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-}
-
-.news img{
-width:100%;
-height:220px;
-object-fit:cover;
-border-radius:10px;
-}
-
-.news h2{
-margin-top:10px;
-}
-
-.news a{
-display:inline-block;
-margin-top:10px;
-background:red;
-color:white;
-padding:10px 20px;
-text-decoration:none;
-border-radius:5px;
-}
-
-footer{
-background:#111;
+.hero{
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url("https://picsum.photos/1200/600");
+background-size:cover;
+background-position:center;
 color:white;
 text-align:center;
-padding:25px;
-margin-top:30px;
+padding:100px 20px;
 }
+
+.hero h2{
+font-size:40px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+max-width:700px;
+margin:auto;
+margin-bottom:25px;
+}
+
+.hero button{
+padding:15px 30px;
+font-size:18px;
+background:#d40000;
+color:white;
+border:none;
+border-radius:30px;
+cursor:pointer;
+}
+
+.hero button:hover{
+background:#900000;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.section-title{
+font-size:28px;
+margin:30px 0 20px;
+color:#222;
+}
+
 </style>
 
 </head>
@@ -124,92 +135,342 @@ margin-top:30px;
 <body>
 
 <div class="ticker">
+
 <marquee>
-🔥 Breaking News • Latest Music • Comedy • Sports • Entertainment • CJ Entertainment
+
+🔥 Breaking News • 🎬 Celebrity Updates • 🎵 Music • 😂 Comedy • ⚽ Sports • Welcome to CJ Entertainment
+
 </marquee>
+
 </div>
 
 <header>
-<h1>🎬 CJ Entertainment</h1>
-<p>Your Home For Celebrity News & Entertainment</p>
+
+<h1>🎬 CJ ENTERTAINMENT</h1>
+
+<p>Your Home for Celebrity News, Music, Comedy, Sports & Trending Videos</p>
+
 </header>
 
 <nav>
-<a href="index.html">Home</a>
-<a href="news.html">News</a>
-<a href="videos.html">Videos</a>
-<a href="gallery.html">Gallery</a>
-<a href="contact.html">Contact</a>
+
+<a href="index.html">🏠 Home</a>
+
+<a href="news.html">📰 News</a>
+
+<a href="videos.html">🎥 Videos</a>
+
+<a href="gallery.html">🖼 Gallery</a>
+
+<a href="contact.html">📞 Contact</a>
+
+<a href="login.html">🔐 Admin</a>
+
 </nav>
 
-<section class="search">
-<input type="text" placeholder="Search latest news...">
-</section>
+<div class="search-box">
+
+<input
+type="text"
+placeholder="Search celebrity news...">
+
+</div>
 
 <section class="hero">
-<h2>🔥 Latest Entertainment Updates</h2>
-<p>Breaking celebrity news, music, sports, comedy and trending stories.</p>
+
+<h2>Welcome to CJ Entertainment</h2>
+
+<p>
+
+Get breaking celebrity news, music updates, comedy, football, lifestyle and trending entertainment stories from Nigeria and around the world.
+
+</p>
+
+<button onclick="location.href='news.html'">
+
+Read Latest News
+
+</button>
+
 </section>
 
-<section id="latestNews">
-Loading latest news...
-</section><script type="module">
+<div class="container">
+
+<h2 class="section-title">
+
+🔥 Featured News
+
+</h2>
+
+<div id="featuredNews">
+
+Loading featured news...
+
+</div></div>
+
+<h2 class="section-title">📰 Breaking News</h2>
+
+<div id="latestNews"></div>
+
+<h2 class="section-title">🎵 Music</h2>
+
+<div class="news-grid">
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=1">
+<h3>Latest Music Updates</h3>
+<p>Discover new songs, albums and artist updates from Nigeria and around the world.</p>
+<button>Read More</button>
+</div>
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=2">
+<h3>Top Charts</h3>
+<p>See which songs are trending across streaming platforms.</p>
+<button>Read More</button>
+</div>
+
+</div>
+
+<h2 class="section-title">😂 Comedy</h2>
+
+<div class="news-grid">
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=3">
+<h3>Comedy Highlights</h3>
+<p>Catch the funniest comedy skits and viral moments.</p>
+<button>Watch Now</button>
+</div>
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=4">
+<h3>Funny Creators</h3>
+<p>Meet the creators making audiences laugh every day.</p>
+<button>Read More</button>
+</div>
+
+</div>
+
+<h2 class="section-title">⚽ Sports</h2>
+
+<div class="news-grid">
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=5">
+<h3>Football News</h3>
+<p>Latest football transfers, match reports and breaking sports stories.</p>
+<button>Read More</button>
+</div>
+
+<div class="news-card">
+<img src="https://picsum.photos/400/250?random=6">
+<h3>Trending Sports</h3>
+<p>Follow the biggest sports headlines from around the world.</p>
+<button>Read More</button>
+</div>
+
+</div>
+
+<style>
+
+.news-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+margin-bottom:40px;
+}
+
+.news-card{
+background:#fff;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+.news-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.news-card h3{
+padding:15px;
+}
+
+.news-card p{
+padding:0 15px 15px;
+}
+
+.news-card button{
+margin:15px;
+padding:10px 20px;
+background:#d40000;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.news-card button:hover{
+background:#900000;
+}
+
+</style><script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+query,
+orderBy
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
-  authDomain: "cj-entertainment-babc7.firebaseapp.com",
-  projectId: "cj-entertainment-babc7",
-  storageBucket: "cj-entertainment-babc7.firebasestorage.app",
-  messagingSenderId: "724552137010",
-  appId: "1:724552137010:web:bd5b4c927e59dd2394ff2b"
+
+apiKey:"AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
+authDomain:"cj-entertainment-babc7.firebaseapp.com",
+projectId:"cj-entertainment-babc7",
+storageBucket:"cj-entertainment-babc7.firebasestorage.app",
+messagingSenderId:"724552137010",
+appId:"1:724552137010:web:bd5b4c927e59dd2394ff2b"
+
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const featuredNews = document.getElementById("featuredNews");
 const latestNews = document.getElementById("latestNews");
 
+featuredNews.innerHTML = "";
 latestNews.innerHTML = "";
 
-try {
-  const snapshot = await getDocs(collection(db, "news"));
+const newsQuery = query(
+collection(db,"news"),
+orderBy("createdAt","desc")
+);
 
-  if (snapshot.empty) {
-    latestNews.innerHTML = "<h2>No news available yet.</h2>";
-  } else {
-    snapshot.forEach((doc) => {
-      const news = doc.data();
+const snapshot = await getDocs(newsQuery);
 
-      latestNews.innerHTML += `
-        <div class="news">
-          ${news.image ? `<img src="${news.image}" alt="${news.title}">` : ""}
-          <h2>${news.title}</h2>
-          <p>${news.description}</p>
+let firstNews = true;
 
-          ${
-            news.video
-              ? `<a href="${news.video}" target="_blank">▶ Watch Video</a>`
-              : ""
-          }
-        </div>
-      `;
-    });
-  }
-} catch (error) {
-  latestNews.innerHTML = `<h2>Error: ${error.message}</h2>`;
+snapshot.forEach((doc)=>{
+
+const news = doc.data();
+
+if(firstNews){
+
+featuredNews.innerHTML = `
+
+<div class="news-card">
+
+<img src="${news.image}" style="width:100%;height:350px;object-fit:cover;">
+
+<h2 style="padding:20px;">${news.title}</h2>
+
+<p style="padding:0 20px 20px;">
+${news.description}
+</p>
+
+</div>
+
+`;
+
+firstNews = false;
+
 }
-    </script><footer>
-    <h2>🎬 CJ Entertainment</h2>
-    <p>Your home for Celebrity News, Music, Comedy, Sports & Trending Videos.</p>
 
-    <p>📧 Email: cjemmanuel909@gmail.com</p>
+latestNews.innerHTML += `
 
-    <p>© 2026 CJ Entertainment. All Rights Reserved.</p>
+<div class="news-card">
+
+<img src="${news.image}" style="width:100%;height:220px;object-fit:cover;">
+
+<h3 style="padding:15px;">
+${news.title}
+</h3>
+
+<p style="padding:0 15px 15px;">
+${news.description}
+</p>
+
+${news.video ? `
+<iframe
+width="100%"
+height="220"
+src="${news.video.replace("watch?v=","embed/")}"
+allowfullscreen>
+</iframe>
+` : ""}
+
+</div>
+
+`;
+
+});
+
+</script><section class="container">
+
+<h2 class="section-title">🎥 Latest Videos</h2>
+
+<div class="news-grid">
+
+<div class="news-card">
+
+<iframe
+width="100%"
+height="220"
+src="https://www.youtube.com/embed/BVIKY3bgOUs"
+allowfullscreen>
+</iframe>
+
+<h3>Entertainment Updates</h3>
+
+<p>
+Watch the latest celebrity videos and trending entertainment stories.
+</p>
+
+</div>
+
+<div class="news-card">
+
+<iframe
+width="100%"
+height="220"
+src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+allowfullscreen>
+</iframe>
+
+<h3>Trending Videos</h3>
+
+<p>
+Stay updated with the newest videos from CJ Entertainment.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer style="background:#111;color:white;text-align:center;padding:40px 20px;margin-top:40px;">
+
+<h2>🎬 CJ Entertainment</h2>
+
+<p>Your home for Celebrity News, Music, Comedy, Sports & Trending Videos.</p>
+
+<p>📧 Email: cjemmanuel909@gmail.com</p>
+
+<p>© 2026 CJ Entertainment. All Rights Reserved.</p>
+
 </footer>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
+      
