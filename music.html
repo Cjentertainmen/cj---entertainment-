@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CJ Entertainment | Music</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f4f4;
+}
+
+header{
+background:#d40000;
+color:#fff;
+text-align:center;
+padding:20px;
+}
+
+nav{
+background:#222;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+padding:15px 20px;
+font-weight:bold;
+}
+
+nav a:hover{
+background:#d40000;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.news-card{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,.15);
+margin-bottom:25px;
+}
+
+.news-card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.news-content{
+padding:20px;
+}
+
+.news-content h2{
+margin-bottom:10px;
+}
+
+.news-content p{
+line-height:1.6;
+margin-bottom:15px;
+}
+
+.like-btn{
+background:#d40000;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.like-btn:hover{
+background:#900000;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🎵 CJ Entertainment Music</h1>
+
+<p>Latest Music News, Albums & Artist Updates</p>
+
+</header>
+
+<nav>
+
+<a href="index.html">🏠 Home</a>
+
+<a href="news.html">📰 News</a>
+
+<a href="music.html">🎵 Music</a>
+
+<a href="comedy.html">😂 Comedy</a>
+
+<a href="videos.html">🎥 Videos</a>
+
+<a href="gallery.html">🖼 Gallery</a>
+
+<a href="contact.html">📞 Contact</a>
+
+<a href="login.html">🔐 Admin</a>
+
+</nav>
+
+<div class="container">
+
+<h2>🎵 Latest Music</h2>
+
+<div id="musicContainer">
+
+Loading music news...
+
+  </div><script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+query,
+where,
+orderBy,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ"
+authDomain: "cj-entertainment-babc7.firebaseapp.com",
+projectId: "cj-entertainment-babc7",
+storageBucket: "cj-entertainment-babc7.firebasestorage.app",
+messagingSenderId: "724552137010",
+appId: "1:724552137010:web:bd5b4c927e59dd2394ff2b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const musicContainer = document.getElementById("musicContainer");
+
+async function loadMusic(){
+
+musicContainer.innerHTML = "";
+
+const q = query(
+collection(db,"news"),
+where("category","==","Music"),
+orderBy("createdAt","desc")
+);
+
+const snapshot = await getDocs(q);
+
+if(snapshot.empty){
+
+musicContainer.innerHTML = "<h3>No music news available yet.</h3>";
+
+return;
+
+}
+
+snapshot.forEach((doc)=>{
+
+const music = doc.data();
+
+musicContainer.innerHTML += `
+
+<div class="news-card">
+
+<img src="${music.image}" alt="${music.title}">
+
+<div class="news-content">
+
+<h2>${music.title}</h2>
+
+<p>${music.description}</p>
+
+${music.video ? `
+<iframe
+width="100%"
+height="250"
+src="${music.video.replace("src="${music.video.replace("watch?v=","embed/")}"
+allowfullscreen>
+</iframe>
+` : ""}
+
+<p>❤️ ${music.likes || 0} Likes</p>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadMusic();
+
+</script>
+
+<footer style="background:#111;color:white;text-align:center;padding:30px;margin-top:40px;">
+
+<h2>🎵 CJ Entertainment</h2>
+
+<p>Your source for the latest music news and entertainment.</p>
+
+<p>📧 cjemmanuel909@gmail.com</p>
+
+<p>© 2026 CJ Entertainment. All Rights Reserved.</p>
+
+</footer>
+
+</body>
+
+</html>
