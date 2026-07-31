@@ -133,7 +133,17 @@ placeholder="YouTube Video Link">
 type="file"
 id="imageFile"
 accept="image/*">
+<select id="category">
 
+<option value="News">📰 News</option>
+
+<option value="Music">🎵 Music</option>
+
+<option value="Comedy">😂 Comedy</option>
+
+<option value="Sports">⚽ Sports</option>
+
+</select>
 <button
 class="publish"
 id="publishBtn">
@@ -301,7 +311,7 @@ const title=document.getElementById("title").value;
 const description=document.getElementById("description").value;
 
 const video=document.getElementById("video").value;
-
+const category = document.getElementById("category").value;
 const file=document.getElementById("imageFile").files[0];
 
 if(!title||!description||!file){
@@ -333,7 +343,7 @@ const imageData=await upload.json();
 const image=imageData.secure_url;
 
 await addDoc(collection(db,"news"),{
-
+category: category,
 title,
 
 description,
