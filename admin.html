@@ -302,7 +302,7 @@ loadNews();
 // First Load
 
 loadNews();// Publish News
-  </script>
+  
 
 document.getElementById("publishBtn").addEventListener("click", async () => {
 
@@ -337,26 +337,35 @@ method:"POST",
 body:formData
 }
 );
+  </script>
 
 const imageData=await upload.json();
 
 const image=imageData.secure_url;
 
-await addDoc(collection(db,"news"),{
-category: category,
-title,
+try {
 
-description,
+  await addDoc(collection(db,"news"),{
+    category,
+    title,
+    description,
+    video,
+    image,
+    likes: 0,
+    createdAt: new Date()
+  });
 
-video,
+  document.getElementById("message").innerHTML =
+    "✅ News Published Successfully!";
 
-image,
+} catch (error) {
 
-createdAt:new Date()
+  document.getElementById("message").innerHTML =
+    "❌ " + error.message;
 
-});
+  console.error(error);
 
-document.getElementById("message").innerHTML="✅ News Published Successfully!";
+}
 
 document.getElementById("title").value="";
 document.getElementById("description").value="";
