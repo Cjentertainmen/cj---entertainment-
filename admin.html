@@ -11,18 +11,22 @@
 
 <style>
 
-body{
-font-family:Arial,sans-serif;
-background:#f5f5f5;
+*{
 margin:0;
 padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
 }
 
 header{
 background:#d40000;
 color:white;
-padding:20px;
 text-align:center;
+padding:20px;
 }
 
 .container{
@@ -35,19 +39,19 @@ padding:20px;
 background:white;
 padding:20px;
 border-radius:10px;
-margin-bottom:20px;
 box-shadow:0 2px 10px rgba(0,0,0,.1);
+margin-bottom:20px;
 }
 
 input,
-textarea{
+textarea,
+select{
 width:100%;
 padding:12px;
 margin:10px 0;
-border-radius:8px;
 border:1px solid #ccc;
+border-radius:8px;
 font-size:16px;
-box-sizing:border-box;
 }
 
 button{
@@ -56,16 +60,30 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 font-size:16px;
-margin-top:10px;
 }
 
 .publish{
 background:#d40000;
 color:white;
+width:100%;
+}
+
+.news-item{
+background:#fafafa;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+border:1px solid #ddd;
+}
+
+.news-item img{
+width:100%;
+border-radius:10px;
+margin-bottom:10px;
 }
 
 .edit{
-background:#ff9800;
+background:orange;
 color:white;
 margin-right:10px;
 }
@@ -73,20 +91,6 @@ margin-right:10px;
 .delete{
 background:#e91e63;
 color:white;
-}
-
-img{
-width:100%;
-border-radius:10px;
-margin-top:10px;
-}
-
-.news-item{
-background:#fafafa;
-padding:15px;
-margin-top:20px;
-border-radius:10px;
-border:1px solid #ddd;
 }
 
 #message{
@@ -102,7 +106,7 @@ margin-top:15px;
 
 <header>
 
-<h1>🛠️ CJ Entertainment Admin</h1>
+<h1>🛠️ CJ Entertainment Admin Panel</h1>
 
 <p>Publish • Edit • Delete News</p>
 
@@ -127,12 +131,13 @@ placeholder="News Description"></textarea>
 <input
 type="text"
 id="video"
-placeholder="YouTube Video Link">
+placeholder="YouTube Video Link (Optional)">
 
 <input
 type="file"
 id="imageFile"
 accept="image/*">
+
 <select id="category">
 
 <option value="News">📰 News</option>
@@ -144,9 +149,10 @@ accept="image/*">
 <option value="Sports">⚽ Sports</option>
 
 </select>
+
 <button
-class="publish"
-id="publishBtn">
+id="publishBtn"
+class="publish">
 
 Publish News
 
@@ -162,15 +168,14 @@ Publish News
 
 <div id="newsList">
 
-Loading news...
+Loading...
 
 </div>
 
 </div>
 
 </div>
-
-<script type="module">
+  <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
@@ -189,7 +194,7 @@ getAuth,
 onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-const firebaseConfig={
+const firebaseConfig = {
 
 apiKey:"AIzaSyAaUKbyTseplQ47ntY5OxXiiN2Pwmdq5uQ",
 
@@ -205,11 +210,9 @@ appId:"1:724552137010:web:bd5b4c927e59dd2394ff2b"
 
 };
 
-const app=initializeApp(firebaseConfig);
-
-const db=getFirestore(app);
-
-const auth=getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -219,8 +222,62 @@ window.location.href="login.html";
 
 }
 
-});// Load all news
+});
 
+document.getElementById("publishBtn").addEventListener("click",async()=>{
+
+const title=document.getElementById("title").value.trim();
+const description=document.getElementById("description").value.trim();
+const video=document.getElementById("video").value.trim();
+const category=document.getElementById("category").value;
+const file=document.getElementById("imageFile").files[0];
+
+if(!title || !description || !file){
+
+document.getElementById("message").innerHTML="❌ Please complete all required fields.";
+
+return;
+
+}
+
+document.getElementById("message").innerHTML="Uploading image...";
+
+const formData=new FormData();
+
+formData.append("file",file);
+formData.append("upload_preset","cjnews");
+
+const upload=await fetch(
+"https://api.cloudinary.com/v1_1/kvczllar/image/upload",
+{
+method:"POST",
+body:formData
+}
+);
+
+const imageData=await upload.json();
+const image=imageData.secure_url;
+
+await addDoc(collection(db,"news"),{
+
+title,
+description,
+video,
+image,
+category,
+likes:0,
+createdAt:new Date()
+
+});
+
+document.getElementById("message").innerHTML="✅ News Published Successfully!";
+
+document.getElementById("title").value="";
+document.getElementById("description").value="";
+document.getElementById("video").value="";
+document.getElementById("imageFile").value="";
+
+});
 async function loadNews(){
 
 const newsList=document.getElementById("newsList");
@@ -232,16 +289,17 @@ const snapshot=await getDocs(collection(db,"news"));
 snapshot.forEach((item)=>{
 
 const news=item.data();
-
 const id=item.id;
 
 newsList.innerHTML+=`
 
 <div class="news-item">
 
-<img src="${news.image}" alt="News Image">
+<img src="${news.image}" alt="News">
 
 <h3>${news.title}</h3>
+
+<p><strong>Category:</strong> ${news.category}</p>
 
 <p>${news.description}</p>
 
@@ -261,8 +319,6 @@ Delete
 
 }
 
-// Delete News
-
 window.deleteNews=async(id)=>{
 
 if(confirm("Delete this news?")){
@@ -275,15 +331,13 @@ loadNews();
 
 };
 
-// Edit News
-
 window.editNews=async(id,title,description)=>{
 
-const newTitle=prompt("Edit Title",title);
+const newTitle=prompt("Edit title",title);
 
-const newDescription=prompt("Edit Description",description);
+const newDescription=prompt("Edit description",description);
 
-if(newTitle&&newDescription){
+if(newTitle && newDescription){
 
 await updateDoc(doc(db,"news",id),{
 
@@ -299,82 +353,9 @@ loadNews();
 
 };
 
-// First Load
-
-loadNews();// Publish News
-  
-
-document.getElementById("publishBtn").addEventListener("click", async () => {
-
-const title=document.getElementById("title").value;
-
-const description=document.getElementById("description").value;
-
-const video=document.getElementById("video").value;
-const category = document.getElementById("category").value;
-const file=document.getElementById("imageFile").files[0];
-
-if(!title||!description||!file){
-
-document.getElementById("message").innerHTML="Please complete all fields.";
-
-return;
-
-}
-
-document.getElementById("message").innerHTML="Uploading image...";
-
-const formData=new FormData();
-
-formData.append("file",file);
-
-formData.append("upload_preset","cjnews");
-
-const upload=await fetch(
-"https://api.cloudinary.com/v1_1/kvczllar/image/upload",
-{
-method:"POST",
-body:formData
-}
-);
-  </script>
-
-const imageData=await upload.json();
-
-const image=imageData.secure_url;
-
-try {
-
-  await addDoc(collection(db,"news"),{
-    category,
-    title,
-    description,
-    video,
-    image,
-    likes: 0,
-    createdAt: new Date()
-  });
-
-  document.getElementById("message").innerHTML =
-    "✅ News Published Successfully!";
-
-} catch (error) {
-
-  document.getElementById("message").innerHTML =
-    "❌ " + error.message;
-
-  console.error(error);
-
-}
-
-document.getElementById("title").value="";
-document.getElementById("description").value="";
-document.getElementById("video").value="";
-document.getElementById("imageFile").value="";
-
 loadNews();
 
-});
-  </body>
+</script>
+
+</body>
 </html>
-  
